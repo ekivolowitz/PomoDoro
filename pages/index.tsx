@@ -1,9 +1,9 @@
 import Head from 'next/head';
 
 import { TimeForm } from 'src/components/TimeForm';
-import { Timer } from 'src/components/Timer';
 
-import { keyframes } from '@chakra-ui/react';
+import { keyframes, HStack, Divider, Image, Link } from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
 export const animation = keyframes`
   0% {
@@ -20,55 +20,18 @@ export const animation = keyframes`
 
 `;
 
-import { useState } from 'react';
-import {
-  Text,
-  Box,
-  Heading,
-  useColorMode,
-  Button,
-  theme,
-} from '@chakra-ui/react';
+// Look here for what I'm going to build: https://pomofocus.io/
+
+import { Box, Heading, theme } from '@chakra-ui/react';
 
 const genRandomColor = () => Math.floor(Math.random() * 16777215).toString(16);
 
 const Home = () => {
   const startColor = `#${genRandomColor()}, #${genRandomColor()}, #${genRandomColor()}, #${genRandomColor()}`;
-  const [goalTime, setGoalTime] = useState<null | number>(null);
-  const [randomColor, setRandomColor] = useState<null | string>(startColor);
-  const { colorMode, toggleColorMode } = useColorMode();
-  const handleGoalTimeClicked = (newGoal: number) => {
-    setGoalTime(newGoal);
-  };
-
-  const lightColors = '#ee7752, #e73c7e, #23a6d5, #23d5ab';
-  const darkColors = '#c03c13, #ab154f, #176e8d, #178d71';
-
-  const handleTitleClick = () => {
-    setRandomColor(
-      `#${genRandomColor()}, #${genRandomColor()}, #${genRandomColor()}, #${genRandomColor()}`
-    );
-  };
-
-  const getContent = () => {
-    if (!!goalTime) {
-      return <Timer goalTime={goalTime} setGoalTime={setGoalTime} />;
-    }
-    return (
-      <Heading
-        as="h1"
-        size="4xl"
-        noOfLines={1}
-        pb={theme.space[2]}
-        onClick={() => handleTitleClick()}
-        cursor="pointer"
-      >{`It's Pomo Time`}</Heading>
-    );
-  };
 
   return (
     <Box
-      bgGradient={`linear-gradient(-45deg, ${randomColor});`}
+      bgGradient={`linear-gradient(-45deg, ${startColor});`}
       bgSize={`400% 400%`}
       animation={`${animation} 15s ease infinite`}
       padding="0 2rem"
@@ -80,17 +43,35 @@ const Home = () => {
       </Head>
       <Box
         minHeight="100vh"
-        padding="4rem 0"
         flex={1}
         display="flex"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="start"
         alignItems="center"
       >
-        {getContent()}
-        {!goalTime && (
-          <TimeForm handleGoalTimeClicked={handleGoalTimeClicked} />
-        )}
+        <HStack w="480px" h="60px">
+          <Image
+            src="/icon-white.png"
+            w="20px"
+            alt="checkmark"
+            fontWeight="bold"
+            fontSize="20px"
+          />
+          <Link
+            ml={theme.space[1]}
+            color={theme.colors.white}
+            textDecoration="none"
+            _hover={{ textDecoration: 'none' }}
+            fontWeight="bold"
+            fontSize="20px"
+            marginInlineStart="none"
+            mr="5px"
+          >
+            {`Pomofocus`}
+          </Link>
+        </HStack>
+        <Box bgColor="rgba(0,0,0,0.1)" height="1px" w="480px" />
+        <TimeForm />
       </Box>
     </Box>
   );
